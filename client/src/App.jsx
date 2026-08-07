@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL, WS_BASE_URL } from './config';
 import Navbar from './components/Navbar';
 import OnboardingModal from './components/OnboardingModal';
 import RadarView from './components/RadarView';
@@ -42,13 +43,12 @@ export default function App() {
       connectWebSocket(parsed.id);
       fetchRadar(parsed.id, currentTag);
       fetchInboxStatus(parsed.id);
-      // Trigger Login Reminder on login / load
       setIsReminderOpen(true);
     } else {
       setIsOnboardingOpen(true);
     }
 
-    fetch('http://localhost:5000/api/auth/config')
+    fetch(`${API_BASE_URL}/api/auth/config`)
       .then(res => res.json())
       .then(data => {
         if (data.desireTags) setDesireTags(data.desireTags);
@@ -58,7 +58,7 @@ export default function App() {
 
   const connectWebSocket = (userId) => {
     try {
-      const ws = new WebSocket('ws://localhost:5000/ws');
+      const ws = new WebSocket(WS_BASE_URL);
       ws.onopen = () => {
         ws.send(JSON.stringify({
           type: 'auth',
@@ -72,7 +72,7 @@ export default function App() {
   };
 
   const fetchInboxStatus = (userId) => {
-    fetch('http://localhost:5000/api/billing/inbox-status', {
+    fetch(`${API_BASE_URL}/api/billing/inbox-status`, {
       headers: { 'x-user-id': userId }
     })
       .then(res => res.json())
@@ -84,7 +84,7 @@ export default function App() {
 
   const fetchRadar = (userId, tag = 'All') => {
     const tagQuery = tag !== 'All' ? `&tag=${encodeURIComponent(tag)}` : '';
-    fetch(`http://localhost:5000/api/profiles/nearby?lat=12.9716&lng=77.5946${tagQuery}`, {
+    fetch(`${API_BASE_URL}/api/profiles/nearby?lat=12.9716&lng=77.5946${tagQuery}`, {
       headers: { 'x-user-id': userId }
     })
       .then(res => res.json())
@@ -96,7 +96,7 @@ export default function App() {
 
   const handleCompleteOnboarding = async (formData) => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -127,7 +127,7 @@ export default function App() {
     if (!currentUser) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/billing/unlock-chat', {
+      const res = await fetch(`${API_BASE_URL}/api/billing/unlock-chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ export default function App() {
   const handlePriorityWhisper = async (targetUser, text) => {
     if (!currentUser) return;
     try {
-      const res = await fetch('http://localhost:5000/api/billing/priority-whisper', {
+      const res = await fetch(`${API_BASE_URL}/api/billing/priority-whisper`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ export default function App() {
   const handleClaimDaily = async () => {
     if (!currentUser) return;
     try {
-      const res = await fetch('http://localhost:5000/api/billing/claim-daily', {
+      const res = await fetch(`${API_BASE_URL}/api/billing/claim-daily`, {
         method: 'POST',
         headers: { 'x-user-id': currentUser.id }
       });
@@ -217,7 +217,7 @@ export default function App() {
     if (!currentUser) return;
     const newState = !currentUser.isIncognito;
     try {
-      const res = await fetch('http://localhost:5000/api/profiles/me', {
+      const res = await fetch(`${API_BASE_URL}/api/profiles/me`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

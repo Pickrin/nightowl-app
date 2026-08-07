@@ -258,6 +258,34 @@
       "isBanned": false,
       "createdAt": "2026-08-07T17:58:32.229Z",
       "lastActive": "Just now"
+    },
+    "user-f0c5efb5": {
+      "id": "user-f0c5efb5",
+      "nickname": "VelvetVixen",
+      "age": 24,
+      "gender": "Female",
+      "seeking": "Male",
+      "desireTags": [
+        "Late-Night Chat",
+        "Secret Romance"
+      ],
+      "midnightVibe": "Late-Night Chai & Long Drives",
+      "datingIntention": "Late-Night Chat",
+      "avatarMask": "mask_owl_purple",
+      "avatarColor": "#a855f7",
+      "avatarIcon": "🦉",
+      "bio": "Exploring discreet connections under the midnight sky.",
+      "lat": 12.9716,
+      "lng": 77.5946,
+      "coinsBalance": 100,
+      "isVip": false,
+      "isIncognito": false,
+      "verified": false,
+      "lastDailyReward": "2026-08-07T18:21:15.001Z",
+      "referralCode": "GHOST-RJF9J",
+      "isBanned": false,
+      "createdAt": "2026-08-07T18:21:15.001Z",
+      "lastActive": "Just now"
     }
   },
   "chats": {
