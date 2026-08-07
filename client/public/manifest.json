@@ -1,0 +1,17 @@
+{
+  "short_name": "NightOwl",
+  "name": "NightOwl: AfterHours Anonymous Dating",
+  "icons": [
+    {
+      "src": "/icon-512.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#070814",
+  "theme_color": "#070814",
+  "display": "standalone",
+  "orientation": "portrait"
+}
