@@ -179,7 +179,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         {step === 1 && (
           <div className="tranquil-step-body animate-fade-in">
             <div className="welcome-glow-orb">
-              <Moon className="welcome-moon-icon" />
+              <img src="/icon-512.jpg" alt="NightOwl" style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }} />
             </div>
 
             <div className="welcome-text-block">

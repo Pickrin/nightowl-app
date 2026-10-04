@@ -79,7 +79,7 @@ export default function RadarView({
             <div className="sweep-ring ring-3" />
             <div className="sweep-beam" />
             <div className="radar-center-blip">
-              <Compass style={{ width: 28, height: 28, color: '#c084fc' }} />
+              <img src="/icon-512.jpg" alt="Radar Center" style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover' }} />
             </div>
           </div>
 

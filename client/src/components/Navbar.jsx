@@ -21,7 +21,7 @@ export default function Navbar({
       <div className="mobile-header-inner">
         {/* Brand Wordmark & Pulsing Nocturnal Dot */}
         <div className="mobile-brand">
-          <div className="nocturnal-live-dot" title="Nocturnal Radar Online" />
+          <img src="/icon-512.jpg" alt="NightOwl" style={{ width: 26, height: 26, borderRadius: 8, border: '1px solid rgba(168, 85, 247, 0.4)', objectFit: 'cover' }} />
           <div className="brand-logo-text">
             <span>NIGHTOWL</span>
             <span className="brand-sub">AFTERHOURS</span>
