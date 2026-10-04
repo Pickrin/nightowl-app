@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Deletion & Data Erasure - NightOwl</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #1e293b;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      background: #f8fafc;
+    }
+    .container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    h1 { color: #0f172a; font-size: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
+    h2 { color: #334155; font-size: 18px; margin-top: 24px; }
+    p, li { font-size: 14px; color: #475569; }
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+    .box {
+      background: #f1f5f9;
+      border-left: 4px solid #ef4444;
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .form-group {
+      margin-top: 16px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-top: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    button {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 14px;
+    }
+    button:hover { background: #dc2626; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">GOOGLE PLAY & DPDPA COMPLIANCE</span>
+    <h1>NightOwl Account Deletion & Data Erasure Policy</h1>
+    <p><strong>Effective Date:</strong> October 4, 2026</p>
+    <p><strong>Platform:</strong> NightOwl: AfterHours (Operated by ArkArk Interactive)</p>
+
+    <h2>1. Right to Erasure & Deletion</h2>
+    <p>
+      In accordance with the <strong>Google Play Data Safety Policy</strong> and India's <strong>Digital Personal Data Protection Act (DPDPA), 2023</strong>, all NightOwl users have the unequivocal right to request permanent deletion of their account and all associated personal data at any time.
+    </p>
+
+    <h2>2. In-App Deletion (Instant)</h2>
+    <p>
+      Users can delete their account instantly inside the NightOwl mobile application:
+    </p>
+    <ol>
+      <li>Tap the <strong>Profile Icon</strong> in the top navigation bar.</li>
+      <li>Scroll down to the <strong>Account Deletion & Data Purge</strong> section.</li>
+      <li>Tap <strong>"Delete My Account Permanently"</strong> and confirm.</li>
+    </ol>
+
+    <h2>3. Web Deletion Request (If App is Uninstalled)</h2>
+    <p>
+      If you have uninstalled the app or cannot access your device, submit your moniker or account identifier below to initiate manual deletion:
+    </p>
+
+    <div class="box">
+      <form onsubmit="event.preventDefault(); document.getElementById('msg').style.display='block';">
+        <div class="form-group">
+          <label><strong>Registered Moniker / User ID:</strong></label>
+          <input type="text" placeholder="e.g. VelvetVixen or user-xxxx" required />
+        </div>
+        <div class="form-group">
+          <label><strong>Contact Email for Confirmation:</strong></label>
+          <input type="email" placeholder="you@example.com" required />
+        </div>
+        <button type="submit">Submit Deletion Request</button>
+        <div id="msg" style="display:none; margin-top: 12px; color: #16a34a; font-weight: bold;">
+          ✓ Deletion request registered. Your profile and records will be purged within 24 hours.
+        </div>
+      </form>
+    </div>
+
+    <h2>4. What Data Gets Permanently Purged?</h2>
+    <ul>
+      <li><strong>Profile Data:</strong> Moniker, gender, age, desire tags, midnight vibes, and avatar.</li>
+      <li><strong>Chat Messages & Vault Media:</strong> All active sessions, burned transcripts, and temporary media vault items.</li>
+      <li><strong>Coin Ledger:</strong> Coin balance, rewards, and referral associations.</li>
+      <li><strong>Matches & Radar Signals:</strong> Active matches and location proximity indexes.</li>
+    </ul>
+
+    <h2>5. Data Retention Exceptions</h2>
+    <p>
+      No personal profile data is retained following deletion. Minimal server access logs (de-identified IP addresses) are retained for a maximum of 30 days solely for security audit purposes and statutory compliance under Indian IT Rules, after which they are automatically expunged.
+    </p>
+
+    <h2>6. Contact Grievance Officer</h2>
+    <p>
+      For questions regarding your data or to escalate a deletion request:
+      <br><strong>Email:</strong> <a href="mailto:arkark1010@gmail.com">arkark1010@gmail.com</a>
+    </p>
+  </div>
+</body>
+</html>

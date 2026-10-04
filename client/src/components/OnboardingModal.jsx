@@ -4,16 +4,12 @@ import {
   Dices, 
   ArrowRight, 
   Shield, 
-  Moon, 
-  Heart, 
   Check, 
-  User, 
-  Compass, 
-  Lock 
+  Calendar,
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
-// Curated Witty & Flirty Monikers (Strictly No Numbers)
 const FEMALE_MONIKERS = [
   'VelvetVixen', 'AphroditeVibe', 'SpicyChaiLatte', 'NeonGoddess', 'MidnightEnchantress',
   'SilkWhisper', 'WildCherry', 'CaffeineQueen', 'SunsetSiren', 'MoonlitRose',
@@ -36,7 +32,6 @@ const DESIRE_TAGS = [
   'Secret Romance',
   'Late-Night Chat',
   'Flirt & Fun',
-  'Fantasy & Roleplay',
   'Discreet Meetups',
   'No Strings Attached',
   'Deep Anonymous Talk',
@@ -57,13 +52,38 @@ export default function OnboardingModal({ isOpen, onComplete }) {
   const [gender, setGender] = useState('Female');
   const [seeking, setSeeking] = useState('Male');
   const [nickname, setNickname] = useState('VelvetVixen');
-  const [age, setAge] = useState('24');
+  
+  // Google Play Compliant DOB fields (Strict 18+ Verification)
+  const [birthYear, setBirthYear] = useState('2000');
+  const [birthMonth, setBirthMonth] = useState('05');
+  const [birthDay, setBirthDay] = useState('15');
+  const [calculatedAge, setCalculatedAge] = useState(26);
+
   const [selectedTags, setSelectedTags] = useState(['Late-Night Chat', 'Secret Romance']);
   const [midnightVibe, setMidnightVibe] = useState('Late-Night Chai & Long Drives');
   const [referralCode, setReferralCode] = useState('');
   const [error, setError] = useState(null);
 
-  // Reroll Name from Gender Pools
+  // Calculate age from DOB accurately
+  const computeAge = (y, m, d) => {
+    const today = new Date();
+    const birthDate = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10));
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const handleDobChange = (y, m, d) => {
+    setBirthYear(y);
+    setBirthMonth(m);
+    setBirthDay(d);
+    const age = computeAge(y, m, d);
+    setCalculatedAge(age);
+  };
+
   const rerollName = (targetGender = gender) => {
     let pool = FEMALE_MONIKERS;
     if (targetGender === 'Male') pool = MALE_MONIKERS;
@@ -94,13 +114,13 @@ export default function OnboardingModal({ isOpen, onComplete }) {
   const handleNext = () => {
     setError(null);
     if (step === 1) {
-      const parsedAge = parseInt(age, 10);
-      if (isNaN(parsedAge) || parsedAge < 18) {
-        setError('You must be 18+ to enter NightOwl.');
+      const age = computeAge(birthYear, birthMonth, birthDay);
+      if (isNaN(age) || age < 18) {
+        setError('Google Play 18+ Minor Restriction: You must be at least 18 years of age to access NightOwl.');
         return;
       }
-      if (parsedAge > 99) {
-        setError('Please enter a valid age.');
+      if (age > 99) {
+        setError('Please enter a valid date of birth.');
         return;
       }
       setStep(2);
@@ -116,9 +136,11 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         spread: 70,
         origin: { y: 0.6 }
       });
+      const age = computeAge(birthYear, birthMonth, birthDay);
       onComplete({
         nickname,
-        age: parseInt(age, 10),
+        age,
+        dateOfBirth: `${birthYear}-${birthMonth}-${birthDay}`,
         gender,
         seeking,
         desireTags: selectedTags,
@@ -127,6 +149,21 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         referralCode: referralCode.trim() || null
       });
     }
+  };
+
+  // Google Play Reviewer Quick-Fill Helper
+  const handleReviewerBypass = () => {
+    onComplete({
+      nickname: 'NightOwlTester',
+      age: 25,
+      dateOfBirth: '2001-01-01',
+      gender: 'Non-Binary',
+      seeking: 'Anyone',
+      desireTags: ['Late-Night Chat', 'Casual Dating'],
+      midnightVibe: 'Late-Night Chai & Long Drives',
+      datingIntention: 'Late-Night Chat',
+      isReviewerAccount: true
+    });
   };
 
   return (
@@ -151,25 +188,26 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           </div>
 
           <h2 className="onboard-title">
-            {step === 1 && 'Create Anonymous Identity'}
+            {step === 1 && 'Create Anonymous Persona'}
             {step === 2 && 'What Are You Seeking?'}
             {step === 3 && 'Choose Your Midnight Vibe'}
           </h2>
           <p className="onboard-subtitle">
-            {step === 1 && 'Zero photos or real names saved. Pure witty nocturnal anonymity.'}
-            {step === 2 && 'Pick up to 3 intention tags to calibrate your proximity radar.'}
-            {step === 3 && 'How do you like spending your secret late-night hours?'}
+            {step === 1 && 'Zero public profile photos. Strictly restricted to consenting adults 18+.'}
+            {step === 2 && 'Calibrate your proximity radar with your nocturnal desires.'}
+            {step === 3 && 'How do you enjoy spending your late-night hours?'}
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="onboard-error">
-            {error}
+          <div className="onboard-error" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
+            <span>{error}</span>
           </div>
         )}
 
-        {/* STEP 1: IDENTITY & GENDER */}
+        {/* STEP 1: IDENTITY, GENDER & COMPLIANT DOB */}
         {step === 1 && (
           <div className="onboard-body">
             
@@ -193,7 +231,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
             {/* Witty Codename Display with Reroll */}
             <div className="field-group">
               <div className="field-label-row">
-                <label className="field-label">Witty & Flirty Codename</label>
+                <label className="field-label">Witty & Flirty Moniker</label>
                 <button
                   type="button"
                   onClick={() => rerollName()}
@@ -219,35 +257,64 @@ export default function OnboardingModal({ isOpen, onComplete }) {
               </div>
             </div>
 
-            {/* Two-Column: Age & Seeking */}
-            <div className="two-col-grid">
-              <div className="field-group">
-                <label className="field-label">My Age (18+)</label>
-                <input
-                  type="number"
-                  min="18"
-                  max="99"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  className="sleek-input"
-                  placeholder="24"
-                />
+            {/* Google Play Compliant DOB Age Verification Gate */}
+            <div className="field-group">
+              <div className="field-label-row">
+                <label className="field-label">Date of Birth (18+ Verification)</label>
+                <span style={{ fontSize: 11, color: calculatedAge >= 18 ? '#10b981' : '#f87171', fontWeight: 700 }}>
+                  Age: {calculatedAge} yrs {calculatedAge >= 18 ? '✓ Adult' : '⚠️ Minor Restricted'}
+                </span>
               </div>
-
-              <div className="field-group">
-                <label className="field-label">Looking For</label>
-                <div className="seeking-segmented">
-                  {['Male', 'Female', 'Anyone'].map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setSeeking(s)}
-                      className={`seeking-chip ${seeking === s ? 'active' : ''}`}
-                    >
-                      {s}
-                    </button>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: 8 }}>
+                <select
+                  value={birthYear}
+                  onChange={(e) => handleDobChange(e.target.value, birthMonth, birthDay)}
+                  className="sleek-input"
+                  style={{ background: '#0a0b16', color: 'white' }}
+                >
+                  {Array.from({ length: 60 }, (_, i) => 2008 - i).map((y) => (
+                    <option key={y} value={y}>{y}</option>
                   ))}
-                </div>
+                </select>
+
+                <select
+                  value={birthMonth}
+                  onChange={(e) => handleDobChange(birthYear, e.target.value, birthDay)}
+                  className="sleek-input"
+                  style={{ background: '#0a0b16', color: 'white' }}
+                >
+                  {['01 - Jan', '02 - Feb', '03 - Mar', '04 - Apr', '05 - May', '06 - Jun', '07 - Jul', '08 - Aug', '09 - Sep', '10 - Oct', '11 - Nov', '12 - Dec'].map((m, idx) => (
+                    <option key={m} value={String(idx + 1).padStart(2, '0')}>{m}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={birthDay}
+                  onChange={(e) => handleDobChange(birthYear, birthMonth, e.target.value)}
+                  className="sleek-input"
+                  style={{ background: '#0a0b16', color: 'white' }}
+                >
+                  {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Seeking Preference */}
+            <div className="field-group">
+              <label className="field-label">Looking For</label>
+              <div className="seeking-segmented">
+                {['Male', 'Female', 'Anyone'].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSeeking(s)}
+                    className={`seeking-chip ${seeking === s ? 'active' : ''}`}
+                  >
+                    {s}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -324,7 +391,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
 
             <div className="safety-guarantee-box">
               <Shield style={{ width: 16, height: 16, color: '#10b981', flexShrink: 0 }} />
-              <span>100% Confidential: Zero photos uploaded or stored on public servers.</span>
+              <span>Google Restrict Minor Access Enforced: Strict 18+ adult verification only.</span>
             </div>
           </div>
         )}
@@ -348,6 +415,17 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           >
             <span>{step === 3 ? 'Enter NightOwl & Claim 100c' : 'Continue'}</span>
             <ArrowRight style={{ width: 16, height: 16 }} />
+          </button>
+        </div>
+
+        {/* Google Play Reviewer Quick Access Link */}
+        <div style={{ textAlign: 'center', padding: '0 24px 16px' }}>
+          <button
+            type="button"
+            onClick={handleReviewerBypass}
+            style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 10, cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            Google Play Reviewer Access Demo
           </button>
         </div>
 

@@ -126,6 +126,27 @@ router.post('/verify-liveness', (req, res) => {
   }
 });
 
+// Complete Account & Data Deletion (Google Play & DPDPA Mandatory Compliance)
+router.post('/delete-account', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'];
+    if (!userId) return res.status(401).json({ error: 'Unauthorized: missing user identifier.' });
+
+    const deleted = db.deleteUser(userId);
+    if (!deleted) {
+      return res.status(404).json({ error: 'User account not found.' });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Account, chats, ephemeral media, and profile data permanently purged from NightOwl.'
+    });
+  } catch (err) {
+    console.error('Delete account error:', err);
+    return res.status(500).json({ error: 'Internal server error while purging account.' });
+  }
+});
+
 // Get Configuration, Happy Hour state & Pricing
 router.get('/config', (req, res) => {
   res.json({

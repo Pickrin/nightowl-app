@@ -263,6 +263,23 @@ class NightOwlDB {
     return this.data.users[id];
   }
 
+  deleteUser(id) {
+    if (!this.data.users[id]) return false;
+    delete this.data.users[id];
+    Object.keys(this.data.chats).forEach(chatId => {
+      const c = this.data.chats[chatId];
+      if (c && (c.user1Id === id || c.user2Id === id)) {
+        delete this.data.chats[chatId];
+        delete this.data.messages[chatId];
+      }
+    });
+    if (this.data.mediaVault) {
+      this.data.mediaVault = this.data.mediaVault.filter(m => m.senderId !== id && m.recipientId !== id);
+    }
+    this.save();
+    return true;
+  }
+
   // ==========================================
   // INBOX & CHAT LIMIT ENGINE: MAX 5 CHATS & MAX 10 REQUESTS
   // ==========================================

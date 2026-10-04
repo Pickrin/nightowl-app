@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Flag, CheckCircle, Ban, ShieldAlert } from 'lucide-react';
+import { X, Flag, CheckCircle, ShieldAlert } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 export default function ReportModal({ isOpen, onClose, reportedUser }) {
@@ -10,13 +10,18 @@ export default function ReportModal({ isOpen, onClose, reportedUser }) {
   const [alsoBlock, setAlsoBlock] = useState(true);
   const [submitted, setSubmitted] = useState(false);
 
+  // Exact Google Play & Indian IT Rules 2021 Safety Categories
   const REASONS = [
     'Harassment or Verbal Abuse',
-    'Inappropriate / Non-Consensual Media',
-    'Commercial Spam / Solicitation',
-    'Suspected Underage / Policy Violation',
-    'Extortion or Blackmail Attempt',
-    'Impersonation or Fake Profile'
+    'Suspected Underage User (Minor < 18)',
+    'Sexual Exploitation or Abuse',
+    'Inappropriate Content / Non-Consensual Media',
+    'Fake Profile or Bot',
+    'Financial Scam or Fraud',
+    'Commercial Spam or Solicitation',
+    'Threats, Blackmail or Extortion',
+    'Impersonation of Another Person',
+    'Other Safety Concern'
   ];
 
   const handleSubmit = async (e) => {
@@ -27,6 +32,7 @@ export default function ReportModal({ isOpen, onClose, reportedUser }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           reportedId: reportedUser.id,
+          reportedName: reportedUser.nickname,
           reason,
           details,
           alsoBlock
@@ -60,13 +66,13 @@ export default function ReportModal({ isOpen, onClose, reportedUser }) {
             <CheckCircle style={{ width: 44, height: 44, color: '#10b981' }} />
             <div style={{ fontSize: 15, fontWeight: 800, color: 'white' }}>Report Submitted & User Blocked</div>
             <p style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.5 }}>
-              This user has been removed from your radar and flagged in the administrative moderation queue for review within 24 hours.
+              This user has been removed from your radar and quarantined in the administrative moderation queue for review within 24 hours.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="modal-body" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div className="field-group">
-              <label className="field-label">Reason for Report</label>
+              <label className="field-label">Reason for Report (Google Play UGC Policy)</label>
               <select
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
@@ -89,7 +95,7 @@ export default function ReportModal({ isOpen, onClose, reportedUser }) {
                 onChange={(e) => setDetails(e.target.value)}
                 className="sleek-input"
                 style={{ resize: 'none' }}
-                placeholder="Describe what occurred..."
+                placeholder="Explain what occurred..."
               />
             </div>
 

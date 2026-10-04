@@ -58,6 +58,14 @@ app.get('/legal/community_guidelines.html', (req, res) => {
   res.send('<h1>Community Guidelines</h1><p>NightOwl Community Guidelines.</p>');
 });
 
+app.get('/legal/delete_account.html', (req, res) => {
+  const p1 = path.join(__dirname, '../legal/delete_account.html');
+  const p2 = path.join(__dirname, '../../legal/delete_account.html');
+  if (fs.existsSync(p1)) return res.sendFile(p1);
+  if (fs.existsSync(p2)) return res.sendFile(p2);
+  res.send('<h1>Account Deletion</h1><p>Contact arkark1010@gmail.com to request permanent deletion.</p>');
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);
