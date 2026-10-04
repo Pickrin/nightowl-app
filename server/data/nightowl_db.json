@@ -147,11 +147,11 @@
         "Casual Dating"
       ],
       "coinsBalance": 150,
-      "referralCode": "GHOST-SL0PE",
+      "referralCode": "GHOST-M18GR",
       "isVip": false,
       "isIncognito": false,
       "isBanned": false,
-      "createdAt": "2026-10-04T08:29:59.951Z",
+      "createdAt": "2026-10-04T10:45:18.618Z",
       "lastActive": "Just now"
     }
   },
@@ -336,6 +336,17 @@
       "orderId": "BONUS-21842",
       "status": "completed",
       "createdAt": "2026-10-04T08:29:59.954Z"
+    },
+    {
+      "id": "tx-pay-1791110718622",
+      "userId": "test-user-a",
+      "type": "credit",
+      "amountCoins": 50,
+      "priceInr": 0,
+      "packageName": "Ghost Referral Reward",
+      "orderId": "BONUS-93421",
+      "status": "completed",
+      "createdAt": "2026-10-04T10:45:18.622Z"
     }
   ],
   "reports": [
@@ -350,6 +361,18 @@
       "status": "pending_review",
       "createdAt": "2026-10-04T08:29:59.984Z",
       "formattedTime": "4 Oct 2026, 1:59 pm"
+    },
+    {
+      "id": "rep-1791110718694",
+      "reporterId": "test-user-a",
+      "reporterName": "VelvetRebel",
+      "reportedId": "test-user-b",
+      "reportedName": "PhantomNomad",
+      "reason": "Suspected Underage User (Minor < 18)",
+      "details": "Automated test verification of Google Play UGC reporting",
+      "status": "pending_review",
+      "createdAt": "2026-10-04T10:45:18.694Z",
+      "formattedTime": "4 Oct 2026, 4:15 pm"
     }
   ],
   "mediaVault": [
@@ -388,6 +411,14 @@
       "creatorName": "VelvetRebel",
       "createdAt": "2026-10-04T08:29:59.987Z",
       "expiresAt": "2026-10-05T08:29:59.987Z",
+      "claimedBy": null
+    },
+    "OWL-124": {
+      "code": "OWL-124",
+      "creatorId": "test-user-a",
+      "creatorName": "VelvetRebel",
+      "createdAt": "2026-10-04T10:45:18.701Z",
+      "expiresAt": "2026-10-05T10:45:18.701Z",
       "claimedBy": null
     }
   },

@@ -1,0 +1,7 @@
+[versions]
+googleServices = "4.5.0"
+gradle = "8.9.1"
+
+[libraries]
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
