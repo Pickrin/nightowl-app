@@ -162,26 +162,98 @@ class NightOwlDB {
       if (fs.existsSync(DB_FILE)) {
         const raw = fs.readFileSync(DB_FILE, 'utf8');
         this.data = JSON.parse(raw);
+        if (!this.data.users) this.data.users = {};
+        if (!this.data.chats) this.data.chats = {};
+        if (!this.data.messages) this.data.messages = {};
         if (!this.data.requests) this.data.requests = {};
-        SEED_PROFILES.forEach(p => {
-          if (!this.data.users[p.id]) {
-            this.data.users[p.id] = { ...p, createdAt: new Date().toISOString() };
+        if (!this.data.transactions) this.data.transactions = [];
+        if (!this.data.reports) this.data.reports = [];
+        if (!this.data.mediaVault) this.data.mediaVault = [];
+        if (!this.data.burnerCodes) this.data.burnerCodes = {};
+        
+        // Remove legacy seed-user-* from persistent storage
+        Object.keys(this.data.users).forEach(id => {
+          if (id.startsWith('seed-user-')) {
+            delete this.data.users[id];
           }
         });
+        this.save();
       } else {
-        SEED_PROFILES.forEach(p => {
-          this.data.users[p.id] = { ...p, createdAt: new Date().toISOString() };
-        });
+        this.data = { users: {}, chats: {}, messages: {}, requests: {}, transactions: [], reports: [], mediaVault: [], burnerCodes: {} };
         this.save();
       }
     } catch (e) {
       console.error('Error loading DB:', e.message);
       this.data = { users: {}, chats: {}, messages: {}, requests: {}, transactions: [], reports: [], mediaVault: [], burnerCodes: {} };
-      SEED_PROFILES.forEach(p => {
-        this.data.users[p.id] = { ...p, createdAt: new Date().toISOString() };
-      });
       this.save();
     }
+  }
+
+  seedTestSandbox() {
+    const sandboxUsers = [
+      {
+        id: 'sandbox-user-1',
+        nickname: 'EchoRaven',
+        age: 25,
+        gender: 'Female',
+        seeking: 'Anyone',
+        desireTags: ['Late-Night Chat', 'Secret Romance'],
+        midnightVibe: 'Late-Night Chai & Long Drives',
+        datingIntention: 'Late-Night Conversations',
+        avatarMask: 'mask_owl_purple',
+        avatarColor: '#a855f7',
+        avatarIcon: '🦉',
+        bio: 'Exploring nocturnal city streets. Looking for thoughtful banter.',
+        lat: 12.9716,
+        lng: 77.5946,
+        coinsBalance: 150,
+        isVip: false,
+        isIncognito: false,
+        referralCode: 'GHOST-RAVEN',
+        verified: true,
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 'sandbox-user-2',
+        nickname: 'NeonViper',
+        age: 27,
+        gender: 'Male',
+        seeking: 'Anyone',
+        desireTags: ['Casual Dating', 'Flirt & Fun'],
+        midnightVibe: 'Flirty Banter & Rooftop Drinks',
+        datingIntention: 'Spontaneous & Fun',
+        avatarMask: 'mask_cyber_magenta',
+        avatarColor: '#d946ef',
+        avatarIcon: '⚡',
+        bio: 'Night shifts and espresso. Let us see where the night takes us.',
+        lat: 12.9720,
+        lng: 77.5950,
+        coinsBalance: 150,
+        isVip: false,
+        isIncognito: false,
+        referralCode: 'GHOST-VIPER',
+        verified: true,
+        createdAt: new Date().toISOString()
+      }
+    ];
+
+    sandboxUsers.forEach(u => {
+      this.data.users[u.id] = u;
+    });
+    this.save();
+    return sandboxUsers;
+  }
+
+  clearTestSandbox() {
+    let count = 0;
+    Object.keys(this.data.users).forEach(id => {
+      if (id.startsWith('sandbox-') || id.startsWith('seed-')) {
+        delete this.data.users[id];
+        count++;
+      }
+    });
+    this.save();
+    return count;
   }
 
   save() {
@@ -604,6 +676,21 @@ class NightOwlDB {
     this.data.reports.push(report);
     this.save();
     return report;
+  }
+
+  blockUser(blockerId, blockedId) {
+    if (!this.data.blocks) this.data.blocks = {};
+    if (!this.data.blocks[blockerId]) this.data.blocks[blockerId] = [];
+    if (!this.data.blocks[blockerId].includes(blockedId)) {
+      this.data.blocks[blockerId].push(blockedId);
+    }
+    this.save();
+    return true;
+  }
+
+  isUserBlocked(userAId, userBId) {
+    if (!this.data.blocks) return false;
+    return !!(this.data.blocks[userAId]?.includes(userBId) || this.data.blocks[userBId]?.includes(userAId));
   }
 
   getAdminStats() {

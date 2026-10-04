@@ -1,155 +1,5 @@
 {
   "users": {
-    "seed-user-1": {
-      "id": "seed-user-1",
-      "nickname": "VelvetVixen",
-      "age": 24,
-      "gender": "Female",
-      "seeking": "Male",
-      "desireTags": [
-        "Late-Night Chat",
-        "Secret Romance",
-        "Flirt & Fun"
-      ],
-      "midnightVibe": "Late-Night Chai & Long Drives",
-      "datingIntention": "Seeking a Secret Late-Night Romance",
-      "avatarMask": "mask_fox_neon",
-      "avatarColor": "#ec4899",
-      "bio": "Software engineer by day, night owl seeking witty banter and midnight chai runs.",
-      "lat": 12.9716,
-      "lng": 77.5946,
-      "coinsBalance": 500,
-      "isVip": true,
-      "isIncognito": false,
-      "lastActive": "Just now",
-      "verified": true,
-      "createdAt": "2026-08-07T17:35:57.743Z"
-    },
-    "seed-user-2": {
-      "id": "seed-user-2",
-      "nickname": "ShadowWhisky",
-      "age": 27,
-      "gender": "Male",
-      "seeking": "Female",
-      "desireTags": [
-        "Casual Dating",
-        "Discreet Meetups",
-        "No Strings Attached"
-      ],
-      "midnightVibe": "Spontaneous Secret Meetups",
-      "datingIntention": "Discreet & No Commitments (NSA)",
-      "avatarMask": "mask_phantom_black",
-      "avatarColor": "#8b5cf6",
-      "bio": "Fitness, fast cars, and zero drama. Looking for someone genuine and fun without commitments.",
-      "lat": 12.978,
-      "lng": 77.64,
-      "coinsBalance": 250,
-      "isVip": false,
-      "isIncognito": false,
-      "lastActive": "3m ago",
-      "verified": true,
-      "createdAt": "2026-08-07T17:35:57.743Z"
-    },
-    "seed-user-3": {
-      "id": "seed-user-3",
-      "nickname": "SpicyChaiLatte",
-      "age": 23,
-      "gender": "Female",
-      "seeking": "Anyone",
-      "desireTags": [
-        "Flirt & Fun",
-        "Fantasy & Roleplay",
-        "Late-Night Chat"
-      ],
-      "midnightVibe": "Flirty Banter & Rooftop Drinks",
-      "datingIntention": "Single & Ready to Explore",
-      "avatarMask": "mask_cat_gold",
-      "avatarColor": "#f59e0b",
-      "bio": "Looking for a mysterious connection. If you have witty banter, we will get along great.",
-      "lat": 12.965,
-      "lng": 77.6,
-      "coinsBalance": 120,
-      "isVip": true,
-      "isIncognito": false,
-      "lastActive": "Online",
-      "verified": true,
-      "createdAt": "2026-08-07T17:35:57.743Z"
-    },
-    "seed-user-4": {
-      "id": "seed-user-4",
-      "nickname": "NeonGoddess",
-      "age": 26,
-      "gender": "Female",
-      "seeking": "Male",
-      "desireTags": [
-        "Casual Dating",
-        "Secret Romance",
-        "Discreet Meetups"
-      ],
-      "midnightVibe": "Spontaneous Secret Meetups",
-      "datingIntention": "Discreet & No Commitments (NSA)",
-      "avatarMask": "mask_cyber_magenta",
-      "avatarColor": "#d946ef",
-      "bio": "Always traveling. In town for the weekend. Show me your secret rooftop spots.",
-      "lat": 12.985,
-      "lng": 77.61,
-      "coinsBalance": 300,
-      "isVip": false,
-      "isIncognito": false,
-      "lastActive": "12m ago",
-      "verified": false,
-      "createdAt": "2026-08-07T17:35:57.743Z"
-    },
-    "seed-user-5": {
-      "id": "seed-user-5",
-      "nickname": "CaffeineNomad",
-      "age": 29,
-      "gender": "Male",
-      "seeking": "Female",
-      "desireTags": [
-        "Deep Anonymous Talk",
-        "Secret Romance",
-        "Late-Night Chat"
-      ],
-      "midnightVibe": "Deep Conversations (Zero Judgement)",
-      "datingIntention": "Just Here for Good Vibes & Chat",
-      "avatarMask": "mask_owl_purple",
-      "avatarColor": "#6366f1",
-      "bio": "Looking for deep nocturnal conversations. Let us talk about everything you would never tell your friends.",
-      "lat": 12.955,
-      "lng": 77.58,
-      "coinsBalance": 400,
-      "isVip": true,
-      "isIncognito": false,
-      "lastActive": "Online",
-      "verified": true,
-      "createdAt": "2026-08-07T17:35:57.743Z"
-    },
-    "seed-user-6": {
-      "id": "seed-user-6",
-      "nickname": "MidnightRebel",
-      "age": 28,
-      "gender": "Male",
-      "seeking": "Female",
-      "desireTags": [
-        "Flirt & Fun",
-        "Late-Night Chat",
-        "Casual Dating"
-      ],
-      "midnightVibe": "Late-Night Chai & Long Drives",
-      "datingIntention": "Seeking a Secret Late-Night Romance",
-      "avatarMask": "mask_wolf_silver",
-      "avatarColor": "#94a3b8",
-      "bio": "Night drives, rock music, and deep secret conversations.",
-      "lat": 12.96,
-      "lng": 77.62,
-      "coinsBalance": 350,
-      "isVip": true,
-      "isIncognito": false,
-      "lastActive": "Online",
-      "verified": true,
-      "createdAt": "2026-08-07T17:35:57.743Z"
-    },
     "user-f9df7b01": {
       "id": "user-f9df7b01",
       "nickname": "SeductiveWhisper",
@@ -285,6 +135,23 @@
       "referralCode": "GHOST-RJF9J",
       "isBanned": false,
       "createdAt": "2026-08-07T18:21:15.001Z",
+      "lastActive": "Just now"
+    },
+    "test-user-b": {
+      "id": "test-user-b",
+      "nickname": "PhantomNomad",
+      "age": 26,
+      "gender": "Male",
+      "seeking": "Female",
+      "desireTags": [
+        "Casual Dating"
+      ],
+      "coinsBalance": 150,
+      "referralCode": "GHOST-SL0PE",
+      "isVip": false,
+      "isIncognito": false,
+      "isBanned": false,
+      "createdAt": "2026-10-04T08:29:59.951Z",
       "lastActive": "Just now"
     }
   },
@@ -447,9 +314,44 @@
       "amountCoins": 20,
       "reason": "unlock_chat_user-f9df7b01",
       "createdAt": "2026-08-07T17:55:26.065Z"
+    },
+    {
+      "id": "tx-pay-1791102525027",
+      "userId": "test-user-a",
+      "type": "credit",
+      "amountCoins": 50,
+      "priceInr": 0,
+      "packageName": "Ghost Referral Reward",
+      "orderId": "BONUS-51130",
+      "status": "completed",
+      "createdAt": "2026-10-04T08:28:45.027Z"
+    },
+    {
+      "id": "tx-pay-1791102599954",
+      "userId": "test-user-a",
+      "type": "credit",
+      "amountCoins": 50,
+      "priceInr": 0,
+      "packageName": "Ghost Referral Reward",
+      "orderId": "BONUS-21842",
+      "status": "completed",
+      "createdAt": "2026-10-04T08:29:59.954Z"
     }
   ],
-  "reports": [],
+  "reports": [
+    {
+      "id": "rep-1791102599984",
+      "reporterId": "test-user-a",
+      "reporterName": "VelvetRebel",
+      "reportedId": "test-user-b",
+      "reportedName": "PhantomNomad",
+      "reason": "Suspected Underage User (Minor < 18)",
+      "details": "Automated test verification of Google Play UGC reporting",
+      "status": "pending_review",
+      "createdAt": "2026-10-04T08:29:59.984Z",
+      "formattedTime": "4 Oct 2026, 1:59 pm"
+    }
+  ],
   "mediaVault": [
     {
       "id": "vault-1786124745209",
@@ -478,5 +380,20 @@
       "adminExpiresAt": "2026-08-14T17:44:00.218Z"
     }
   ],
-  "requests": {}
+  "requests": {},
+  "burnerCodes": {
+    "OWL-542": {
+      "code": "OWL-542",
+      "creatorId": "test-user-a",
+      "creatorName": "VelvetRebel",
+      "createdAt": "2026-10-04T08:29:59.987Z",
+      "expiresAt": "2026-10-05T08:29:59.987Z",
+      "claimedBy": null
+    }
+  },
+  "blocks": {
+    "test-user-a": [
+      "test-user-b"
+    ]
+  }
 }

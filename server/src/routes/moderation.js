@@ -7,17 +7,22 @@ const router = express.Router();
 router.post('/report', (req, res) => {
   try {
     const reporterId = req.headers['x-user-id'] || 'anonymous';
-    const { reportedId, reason, details } = req.body;
+    const { reportedId, reason, details, alsoBlock } = req.body;
 
     if (!reportedId || !reason) {
       return res.status(400).json({ error: 'Reported user ID and reason are required.' });
     }
 
     const report = db.createReport(reporterId, reportedId, reason, details);
+    if (alsoBlock && reporterId !== 'anonymous') {
+      db.blockUser(reporterId, reportedId);
+    }
+
     res.json({
       success: true,
       message: 'Report submitted for human & automated review. The user has been muted from your radar.',
-      reportId: report.id
+      reportId: report.id,
+      blocked: !!alsoBlock
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to submit report.' });

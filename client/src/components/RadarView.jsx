@@ -7,7 +7,10 @@ import {
   Zap, 
   CheckCircle2,
   Radio,
-  Flame
+  Flame,
+  Share2,
+  Compass,
+  ArrowRight
 } from 'lucide-react';
 
 export default function RadarView({
@@ -18,14 +21,18 @@ export default function RadarView({
   onUnlockChat,
   currentUser,
   onOpenShop,
-  onPriorityWhisper
+  onPriorityWhisper,
+  onGoToVault
 }) {
   const [whisperTarget, setWhisperTarget] = useState(null);
   const [whisperText, setWhisperText] = useState('');
 
   // Check if current hour in IST is Happy Hour (00:00 to 03:59 IST)
   const isHappyHour = () => {
-    const hour = parseInt(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', hour12: false }).format(new Date()), 10);
+    const hour = parseInt(
+      new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', hour12: false }).format(new Date()),
+      10
+    );
     return hour >= 0 && hour < 4;
   };
 
@@ -40,149 +47,172 @@ export default function RadarView({
   };
 
   return (
-    <div className="radar-container" style={{ maxWidth: 1080, margin: '0 auto', padding: '0 16px' }}>
-      
-      {/* Sleek Happy Hour Minimal Banner */}
-      <div className={`happy-hour-bar ${isHappyHour() ? 'active' : ''}`}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div className="pulse-dot"></div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9' }}>
-            {isHappyHour() ? '🌙 Nocturnal Happy Hour Active' : '🌙 Midnight Radar'}
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-dim)', marginLeft: 8 }}>
-              {isHappyHour() ? '50% off all secret chat unlocks' : 'Discreet & anonymous matches near you'}
-            </span>
-          </div>
-        </div>
-        <div className="cost-tag">
-          {unlockCost} Coins / Chat
-        </div>
-      </div>
-
-      {/* Sleek Filter Bar */}
-      <div className="filter-scroll" style={{ margin: '18px 0 24px' }}>
+    <div className="radar-page-container">
+      {/* Category Pills Filter */}
+      <div className="radar-filter-bar">
         <button
+          type="button"
           onClick={() => onSelectTag('All')}
-          className={`filter-chip ${currentTag === 'All' ? 'active' : ''}`}
+          className={`filter-pill ${currentTag === 'All' ? 'active' : ''}`}
         >
-          <span>All Nocturnal</span>
+          <span>All Owls</span>
         </button>
 
         {desireTags.map((tag) => (
           <button
             key={tag}
+            type="button"
             onClick={() => onSelectTag(tag)}
-            className={`filter-chip ${currentTag === tag ? 'active' : ''}`}
+            className={`filter-pill ${currentTag === tag ? 'active' : ''}`}
           >
             <span>{tag}</span>
           </button>
         ))}
       </div>
 
-      {/* Minimalist Modern Cards Grid */}
-      <div className="radar-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20 }}>
-        {nearbyUsers.length === 0 ? (
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '80px 20px', color: 'var(--text-muted)' }}>
-            <Moon style={{ width: 40, height: 40, margin: '0 auto 12px', opacity: 0.3 }} />
-            <h3 style={{ color: 'white', fontSize: 15, fontWeight: 600 }}>No Profiles Active in This Filter</h3>
-            <p style={{ fontSize: 13, marginTop: 4, color: 'var(--text-dim)' }}>Try switching to "All Nocturnal" to discover more matches.</p>
+      {/* When Radar is Empty: Sleek Ambient Radar Sweep */}
+      {nearbyUsers.length === 0 ? (
+        <div className="empty-radar-stage">
+          <div className="radar-sweep-rig">
+            <div className="sweep-ring ring-1" />
+            <div className="sweep-ring ring-2" />
+            <div className="sweep-ring ring-3" />
+            <div className="sweep-beam" />
+            <div className="radar-center-blip">
+              <Compass style={{ width: 28, height: 28, color: '#c084fc' }} />
+            </div>
           </div>
-        ) : (
-          nearbyUsers.map((user) => (
-            <div key={user.id} className="sleek-card">
-              
-              {/* Card Top: Moniker + Verification + Distance/Age Chips */}
-              <div className="card-top-row">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <h3 className="card-moniker">{user.nickname}</h3>
+
+          <h3 className="empty-radar-heading">The Radar is Silent in Your Sector</h3>
+          <p className="empty-radar-text">
+            No real nocturnal profiles are active within 15 km right now. No bots or fake accounts are simulated.
+          </p>
+
+          <div className="awaken-card">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#fde047', fontWeight: 800, fontSize: 13 }}>
+              <Sparkles style={{ width: 16, height: 16 }} />
+              <span>Awaken Your City (+50 Coins)</span>
+            </div>
+            <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
+              Share your Ghost Invite code with contacts. When they register, both of you unlock 50 free coins instantly.
+            </p>
+            <button
+              type="button"
+              onClick={onGoToVault}
+              className="btn-primary"
+              style={{ width: '100%', justifyContent: 'center', marginTop: 10, padding: 10, fontSize: 12 }}
+            >
+              <Share2 style={{ width: 14, height: 14 }} />
+              <span>Get My Ghost Invite Code</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="radar-dossiers-grid">
+          {nearbyUsers.map((user) => (
+            <div key={user.id} className="dossier-card">
+              {/* Card Header & Distance */}
+              <div className="dossier-top">
+                <div className="dossier-avatar-wrap">
+                  <div
+                    className="dossier-avatar"
+                    style={{
+                      backgroundColor: `${user.avatarColor || '#a855f7'}20`,
+                      borderColor: user.avatarColor || '#a855f7'
+                    }}
+                  >
+                    <span>{user.avatarIcon || '🦉'}</span>
+                  </div>
                   {user.verified && (
-                    <CheckCircle2 style={{ width: 15, height: 15, color: '#10b981', flexShrink: 0 }} />
+                    <div className="dossier-verified-badge" title="Verified Human">✓</div>
                   )}
                 </div>
 
-                <div className="meta-chips-group">
-                  <span className="meta-chip">{user.age} yrs</span>
-                  <span className="meta-chip distance">
-                    <MapPin style={{ width: 11, height: 11 }} />
-                    {user.distanceKm} km
-                  </span>
+                <div className="dossier-id-block">
+                  <div className="dossier-title-row">
+                    <h3 className="dossier-nickname">{user.nickname}</h3>
+                    <span className="dossier-age">{user.age} yrs</span>
+                  </div>
+                  <div className="dossier-distance">
+                    <MapPin style={{ width: 12, height: 12, color: 'var(--primary)' }} />
+                    <span>{user.distanceKm ? `${user.distanceKm} km away` : 'Nearby'}</span>
+                    <span className="dot-sep">•</span>
+                    <span>Seeking {user.seeking}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Seeking Line */}
-              <div className="card-seeking-line">
-                Seeking <span className="highlight">{user.seeking}</span>
+              {/* Midnight Vibe & Desires */}
+              <div className="dossier-vibe-quote">
+                "{user.midnightVibe || 'Late-Night Chai & Long Drives'}"
               </div>
 
-              {/* Midnight Vibe Quote Block */}
-              <div className="card-vibe-quote">
-                "{user.midnightVibe || 'Spontaneous nocturnal connections'}"
-              </div>
-
-              {/* Compact Desire Tag Pills */}
-              <div className="card-tags-row">
-                {user.desireTags?.slice(0, 3).map((tag) => (
-                  <span key={tag} className="minimal-tag">
+              <div className="dossier-tags-row">
+                {user.desireTags?.map((tag) => (
+                  <span key={tag} className="dossier-tag-pill">
                     {tag}
                   </span>
                 ))}
               </div>
 
-              {/* Bottom Actions: Clean Gradient Primary + Minimal Whisper */}
-              <div className="card-actions-row">
+              {/* Action Buttons */}
+              <div className="dossier-actions-row">
                 <button
+                  type="button"
                   onClick={() => onUnlockChat(user)}
-                  className="btn-chat-primary"
+                  className="dossier-primary-btn"
                 >
                   <Lock style={{ width: 14, height: 14 }} />
                   <span>Start Chat ({unlockCost}c)</span>
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => setWhisperTarget(user)}
-                  className="btn-whisper-minimal"
-                  title="Send Priority Whisper (50c)"
+                  className="dossier-whisper-btn"
+                  title="Send Priority Whisper"
                 >
-                  <Zap style={{ width: 14, height: 14 }} />
-                  <span>Whisper</span>
+                  <Zap style={{ width: 14, height: 14, color: '#fde047' }} />
                 </button>
               </div>
-
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
-      {/* Priority Whisper Modal */}
+      {/* Priority Whisper Dialog */}
       {whisperTarget && (
         <div className="modal-backdrop">
           <div className="modal-card" style={{ maxWidth: 400 }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Zap style={{ width: 16, height: 16, color: '#f59e0b' }} />
+                <Zap style={{ width: 18, height: 18, color: '#fde047' }} />
                 <span className="modal-title">Priority Whisper to {whisperTarget.nickname}</span>
               </div>
-              <button onClick={() => setWhisperTarget(null)} className="btn-icon">✕</button>
+              <button onClick={() => setWhisperTarget(null)} className="btn-icon">×</button>
             </div>
-
-            <form onSubmit={handleSendWhisper} className="modal-body" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ padding: '10px 12px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: 12, fontSize: 12, color: '#fde047', lineHeight: 1.4 }}>
-                ⚡ Whispers cost 50 Coins and are pinned at the top of their inbox with a golden glow.
-              </div>
-
+            <form onSubmit={handleSendWhisper} className="modal-body" style={{ padding: 18 }}>
+              <p style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
+                Delivers an instant high-priority highlighted notification that bypasses standard waitlists (50 coins).
+              </p>
               <textarea
                 rows={3}
-                placeholder="Write your secret whisper..."
                 value={whisperText}
                 onChange={(e) => setWhisperText(e.target.value)}
-                className="form-input"
+                placeholder="Say something intriguing..."
+                className="sleek-input"
                 style={{ resize: 'none' }}
+                maxLength={140}
                 required
               />
-
-              <button type="submit" className="btn-primary" style={{ justifyContent: 'center', padding: '12px', background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}>
-                <Zap style={{ width: 15, height: 15 }} />
-                <span>Send Whisper (50c)</span>
-              </button>
+              <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+                <button type="button" onClick={() => setWhisperTarget(null)} className="btn-secondary" style={{ flex: 1 }}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
+                  Send Whisper (50c)
+                </button>
+              </div>
             </form>
           </div>
         </div>

@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE_URL, WS_BASE_URL } from './config';
 import Navbar from './components/Navbar';
-import OnboardingModal from './components/OnboardingModal';
+import BottomNav from './components/BottomNav';
 import RadarView from './components/RadarView';
+import ChatsTab from './components/ChatsTab';
+import VaultTab from './components/VaultTab';
+import ProfileTab from './components/ProfileTab';
 import ChatRoomModal from './components/ChatRoomModal';
 import CoinShopModal from './components/CoinShopModal';
 import ReportModal from './components/ReportModal';
 import PanicScreen from './components/PanicScreen';
-import ProfileModal from './components/ProfileModal';
+import OnboardingModal from './components/OnboardingModal';
 import BiometricVerificationModal from './components/BiometricVerificationModal';
-import AdminDashboard from './components/AdminDashboard';
-import GhostReferralModal from './components/GhostReferralModal';
-import BurnerQrModal from './components/BurnerQrModal';
-import CapacityReminderModal from './components/CapacityReminderModal';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('radar');
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isVerificationOpen, setIsVerificationOpen] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isReferralOpen, setIsReferralOpen] = useState(false);
-  const [isBurnerOpen, setIsBurnerOpen] = useState(false);
-  const [isReminderOpen, setIsReminderOpen] = useState(false);
   const [isPanicActive, setIsPanicActive] = useState(false);
   const [selectedChatPartner, setSelectedChatPartner] = useState(null);
   const [reportedUser, setReportedUser] = useState(null);
@@ -31,8 +26,7 @@ export default function App() {
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [currentTag, setCurrentTag] = useState('All');
   const [desireTags, setDesireTags] = useState([]);
-  const [inboxStatus, setInboxStatus] = useState({ activeChatsCount: 1, pendingRequestsCount: 2 });
-  const [dailyClaimAvailable, setDailyClaimAvailable] = useState(true);
+  const [inboxStatus, setInboxStatus] = useState({ activeChatsCount: 0, pendingRequestsCount: 0 });
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -43,7 +37,6 @@ export default function App() {
       connectWebSocket(parsed.id);
       fetchRadar(parsed.id, currentTag);
       fetchInboxStatus(parsed.id);
-      setIsReminderOpen(true);
     } else {
       setIsOnboardingOpen(true);
     }
@@ -99,33 +92,38 @@ export default function App() {
       const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          nickname: formData.nickname,
+          age: formData.age,
+          gender: formData.gender,
+          seeking: formData.seeking,
+          desireTags: formData.desireTags,
+          midnightVibe: formData.midnightVibe,
+          datingIntention: formData.datingIntention,
+          referralCode: formData.referralCode,
+          avatarMask: formData.gender === 'Female' ? 'mask_fox_neon' : 'mask_owl_purple',
+          avatarColor: formData.gender === 'Female' ? '#ec4899' : '#a855f7'
+        })
       });
+
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.user) {
         setCurrentUser(data.user);
         localStorage.setItem('nightowl_user', JSON.stringify(data.user));
         setIsOnboardingOpen(false);
         connectWebSocket(data.user.id);
         fetchRadar(data.user.id, currentTag);
-        fetchInboxStatus(data.user.id);
-        setIsReminderOpen(true);
+      } else {
+        alert(data.error || 'Failed to complete registration');
       }
-    } catch (err) {
-      console.error('Onboarding failed:', err);
-    }
-  };
-
-  const handleSelectTag = (tag) => {
-    setCurrentTag(tag);
-    if (currentUser) {
-      fetchRadar(currentUser.id, tag);
+    } catch (e) {
+      console.error('Registration failed:', e);
+      alert('Network error connecting to NightOwl cloud');
     }
   };
 
   const handleUnlockChat = async (targetUser) => {
     if (!currentUser) return;
-
     try {
       const res = await fetch(`${API_BASE_URL}/api/billing/unlock-chat`, {
         method: 'POST',
@@ -140,7 +138,7 @@ export default function App() {
 
       if (data.capacityExceeded) {
         alert(`⚠️ Capacity Alert: ${data.error}`);
-        setIsReminderOpen(true);
+        setActiveTab('chats');
         return;
       }
 
@@ -191,31 +189,9 @@ export default function App() {
     }
   };
 
-  const handleClaimDaily = async () => {
-    if (!currentUser) return;
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/billing/claim-daily`, {
-        method: 'POST',
-        headers: { 'x-user-id': currentUser.id }
-      });
-      const data = await res.json();
-      if (data.success) {
-        const updated = { ...currentUser, coinsBalance: data.coinsBalance };
-        setCurrentUser(updated);
-        localStorage.setItem('nightowl_user', JSON.stringify(updated));
-        setDailyClaimAvailable(false);
-        alert('🎁 +20 Daily Coins Credited to your vault!');
-      } else {
-        alert(data.error || 'Daily reward already claimed.');
-      }
-    } catch (e) {
-      console.error('Claim error:', e);
-    }
-  };
-
   const handleToggleIncognito = async () => {
     if (!currentUser) return;
-    const newState = !currentUser.isIncognito;
+    const nextState = !currentUser.isIncognito;
     try {
       const res = await fetch(`${API_BASE_URL}/api/profiles/me`, {
         method: 'PUT',
@@ -223,135 +199,172 @@ export default function App() {
           'Content-Type': 'application/json',
           'x-user-id': currentUser.id
         },
-        body: JSON.stringify({ isIncognito: newState })
+        body: JSON.stringify({ isIncognito: nextState })
       });
       const data = await res.json();
       if (data.success) {
-        const updated = { ...currentUser, isIncognito: newState };
+        const updated = { ...currentUser, isIncognito: nextState };
         setCurrentUser(updated);
         localStorage.setItem('nightowl_user', JSON.stringify(updated));
       }
     } catch (e) {
-      console.error('Incognito toggle error:', e);
+      console.error('Incognito update error:', e);
     }
   };
 
+  const handleCoinsPurchased = (newBalance) => {
+    if (!currentUser) return;
+    const updated = { ...currentUser, coinsBalance: newBalance };
+    setCurrentUser(updated);
+    localStorage.setItem('nightowl_user', JSON.stringify(updated));
+  };
+
+  const handleVerificationComplete = (bonusCoins) => {
+    if (!currentUser) return;
+    const updated = {
+      ...currentUser,
+      verified: true,
+      coinsBalance: (currentUser.coinsBalance || 0) + bonusCoins
+    };
+    setCurrentUser(updated);
+    localStorage.setItem('nightowl_user', JSON.stringify(updated));
+  };
+
   return (
-    <div className="app-container">
-      {/* Camouflage / Panic Screen */}
-      <PanicScreen
-        isActive={isPanicActive}
-        onExit={() => setIsPanicActive(false)}
-      />
+    <div className="app-viewport">
+      {/* Panic Screen Override */}
+      {isPanicActive ? (
+        <PanicScreen onExit={() => setIsPanicActive(false)} />
+      ) : (
+        <>
+          {/* Top Status Header */}
+          <Navbar
+            user={currentUser}
+            onOpenShop={() => setIsShopOpen(true)}
+            onTriggerPanic={() => setIsPanicActive(true)}
+            onOpenAdmin={() => {}}
+          />
 
-      {/* Top Navbar with Capacity Indicator */}
-      <Navbar
-        user={currentUser}
-        inboxStatus={inboxStatus}
-        onOpenShop={() => setIsShopOpen(true)}
-        onOpenProfile={() => setIsProfileOpen(true)}
-        onTriggerPanic={() => setIsPanicActive(true)}
-        onClaimDaily={handleClaimDaily}
-        dailyClaimAvailable={dailyClaimAvailable}
-        onOpenVerification={() => setIsVerificationOpen(true)}
-        onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenReferral={() => setIsReferralOpen(true)}
-        onOpenBurner={() => setIsBurnerOpen(true)}
-        onOpenReminder={() => setIsReminderOpen(true)}
-      />
+          {/* Main Tab Screen Content Area */}
+          <main className="tab-viewport-content">
+            {activeTab === 'radar' && (
+              <RadarView
+                nearbyUsers={nearbyUsers}
+                currentTag={currentTag}
+                onSelectTag={(tag) => {
+                  setCurrentTag(tag);
+                  if (currentUser) fetchRadar(currentUser.id, tag);
+                }}
+                desireTags={desireTags}
+                onUnlockChat={handleUnlockChat}
+                currentUser={currentUser}
+                onOpenShop={() => setIsShopOpen(true)}
+                onPriorityWhisper={handlePriorityWhisper}
+                onGoToVault={() => setActiveTab('vault')}
+              />
+            )}
 
-      {/* Main Content Area */}
-      <main className="main-content">
-        <RadarView
-          nearbyUsers={nearbyUsers}
-          currentTag={currentTag}
-          onSelectTag={handleSelectTag}
-          desireTags={desireTags}
-          onUnlockChat={handleUnlockChat}
+            {activeTab === 'chats' && (
+              <ChatsTab
+                currentUser={currentUser}
+                onOpenChat={(partner) => setSelectedChatPartner(partner)}
+                onGoToRadar={() => setActiveTab('radar')}
+                onGoToVault={() => setActiveTab('vault')}
+              />
+            )}
+
+            {activeTab === 'vault' && (
+              <VaultTab
+                currentUser={currentUser}
+                onOpenShop={() => setIsShopOpen(true)}
+                onRefreshUser={() => {
+                  if (currentUser) fetchRadar(currentUser.id, currentTag);
+                }}
+              />
+            )}
+
+            {activeTab === 'profile' && (
+              <ProfileTab
+                currentUser={currentUser}
+                onToggleIncognito={handleToggleIncognito}
+                onOpenVerification={() => setIsVerificationOpen(true)}
+                onOpenShop={() => setIsShopOpen(true)}
+                onAccountDeleted={() => {
+                  setCurrentUser(null);
+                  setIsOnboardingOpen(true);
+                  setActiveTab('radar');
+                }}
+                onRefreshRadar={() => {
+                  if (currentUser) fetchRadar(currentUser.id, currentTag);
+                }}
+              />
+            )}
+          </main>
+
+          {/* Mobile Bottom Navigation Bar */}
+          <BottomNav
+            activeTab={activeTab}
+            onSelectTab={(tabId) => setActiveTab(tabId)}
+            activeChatsCount={inboxStatus?.activeChatsCount || 0}
+          />
+        </>
+      )}
+
+      {/* OVERLAY MODALS */}
+
+      {/* Full-Screen Chat Room Modal */}
+      {selectedChatPartner && currentUser && (
+        <ChatRoomModal
+          isOpen={!!selectedChatPartner}
+          onClose={() => {
+            setSelectedChatPartner(null);
+            if (currentUser) fetchInboxStatus(currentUser.id);
+          }}
           currentUser={currentUser}
-          onOpenShop={() => setIsShopOpen(true)}
-          onPriorityWhisper={handlePriorityWhisper}
+          chatPartner={selectedChatPartner}
+          socket={socket}
+          onReportUser={(partner) => {
+            setReportedUser(partner);
+            setSelectedChatPartner(null);
+          }}
+          onCoinsUpdated={(newBalance) => {
+            const updated = { ...currentUser, coinsBalance: newBalance };
+            setCurrentUser(updated);
+            localStorage.setItem('nightowl_user', JSON.stringify(updated));
+          }}
         />
-      </main>
+      )}
 
-      {/* Modals & Dialogs */}
-      <OnboardingModal
-        isOpen={isOnboardingOpen}
-        onComplete={handleCompleteOnboarding}
-      />
-
-      <CapacityReminderModal
-        isOpen={isReminderOpen}
-        onClose={() => setIsReminderOpen(false)}
-        inboxStatus={inboxStatus}
-        user={currentUser}
-      />
-
-      <AdminDashboard
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-      />
-
-      <GhostReferralModal
-        isOpen={isReferralOpen}
-        onClose={() => setIsReferralOpen(false)}
-        user={currentUser}
-      />
-
-      <BurnerQrModal
-        isOpen={isBurnerOpen}
-        onClose={() => setIsBurnerOpen(false)}
-        currentUser={currentUser}
-        onBurnerConnected={(partner) => setSelectedChatPartner(partner)}
-      />
-
-      <BiometricVerificationModal
-        isOpen={isVerificationOpen}
-        onClose={() => setIsVerificationOpen(false)}
-        currentUser={currentUser}
-        onVerificationComplete={(updatedUser) => {
-          setCurrentUser(updatedUser);
-          localStorage.setItem('nightowl_user', JSON.stringify(updatedUser));
-        }}
-      />
-
-      <ChatRoomModal
-        isOpen={!!selectedChatPartner}
-        onClose={() => setSelectedChatPartner(null)}
-        partner={selectedChatPartner}
-        currentUser={currentUser}
-        socket={socket}
-        onOpenReport={(p) => setReportedUser(p)}
-        onUnmatchSuccess={(updatedStatus) => {
-          if (updatedStatus) setInboxStatus(updatedStatus);
-          if (currentUser) fetchInboxStatus(currentUser.id);
-        }}
-      />
-
+      {/* Coin Shop Modal */}
       <CoinShopModal
         isOpen={isShopOpen}
         onClose={() => setIsShopOpen(false)}
         currentUser={currentUser}
-        onPurchaseSuccess={(updatedUser) => {
-          setCurrentUser(updatedUser);
-          localStorage.setItem('nightowl_user', JSON.stringify(updatedUser));
-        }}
-        onClaimDaily={handleClaimDaily}
-        dailyClaimAvailable={dailyClaimAvailable}
+        onPurchaseSuccess={handleCoinsPurchased}
       />
 
+      {/* UGC Report Modal (10 Google Categories + Block) */}
       <ReportModal
         isOpen={!!reportedUser}
-        onClose={() => setReportedUser(null)}
+        onClose={() => {
+          setReportedUser(null);
+          if (currentUser) fetchRadar(currentUser.id, currentTag);
+        }}
         reportedUser={reportedUser}
       />
 
-      <ProfileModal
-        isOpen={isProfileOpen}
-        onClose={() => setIsProfileOpen(false)}
-        user={currentUser}
-        onToggleIncognito={handleToggleIncognito}
-        onOpenShop={() => setIsShopOpen(true)}
+      {/* Biometric Verification Modal */}
+      <BiometricVerificationModal
+        isOpen={isVerificationOpen}
+        onClose={() => setIsVerificationOpen(false)}
+        currentUser={currentUser}
+        onVerificationSuccess={handleVerificationComplete}
+      />
+
+      {/* Strict 18+ DOB Registration Modal */}
+      <OnboardingModal
+        isOpen={isOnboardingOpen}
+        onComplete={handleCompleteOnboarding}
       />
     </div>
   );

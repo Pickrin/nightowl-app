@@ -69,4 +69,47 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// Fetch Current User's Active Chats & Pending Requests
+router.get('/my/chats', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'];
+    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
+    const activeChats = db.getUserActiveChats(userId).map(c => {
+      const partnerId = c.user1Id === userId ? c.user2Id : c.user1Id;
+      const partner = db.getUser(partnerId);
+      const messages = db.getChatMessages(c.id);
+      const lastMsg = messages[messages.length - 1];
+      return {
+        id: c.id,
+        partnerId,
+        partnerName: partner ? partner.nickname : (c.user1Id === userId ? c.user2Name : c.user1Name),
+        partnerMask: partner?.avatarMask || 'mask_owl_purple',
+        partnerColor: partner?.avatarColor || '#a855f7',
+        partnerIcon: partner?.avatarIcon || '🦉',
+        partnerAge: partner?.age || 24,
+        partnerGender: partner?.gender || 'Unknown',
+        partnerVerified: partner?.verified || false,
+        lastMessage: lastMsg ? (lastMsg.mediaUrl ? '📷 Photo (Vanishes in 30s)' : lastMsg.text) : 'Chat unlocked',
+        updatedAt: c.updatedAt || c.startedIso,
+        startedAt: c.startedAt
+      };
+    });
+
+    const pendingRequests = db.getUserPendingRequests(userId);
+
+    res.json({
+      success: true,
+      activeChats,
+      pendingRequests,
+      capacity: {
+        active: activeChats.length,
+        max: 5
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch user chats' });
+  }
+});
+
 export default router;

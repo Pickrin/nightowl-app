@@ -102,4 +102,33 @@ router.post('/ban-user', (req, res) => {
   }
 });
 
+// Developer Testing Sandbox Controls
+router.post('/sandbox/seed', (req, res) => {
+  try {
+    const seeded = db.seedTestSandbox();
+    res.json({ success: true, message: 'Spawned 2 test personas for two-way testing.', users: seeded });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to seed sandbox' });
+  }
+});
+
+router.post('/sandbox/clear', (req, res) => {
+  try {
+    const cleared = db.clearTestSandbox();
+    res.json({ success: true, message: `Cleared ${cleared} test personas.` });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to clear sandbox' });
+  }
+});
+
+router.post('/sandbox/wipe-all', (req, res) => {
+  try {
+    db.data = { users: {}, chats: {}, messages: {}, requests: {}, transactions: [], reports: [], mediaVault: [], burnerCodes: {} };
+    db.save();
+    res.json({ success: true, message: 'Clean slate: All users, chats, and records completely wiped.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to wipe database' });
+  }
+});
+
 export default router;
