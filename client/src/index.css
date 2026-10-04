@@ -2037,3 +2037,480 @@ body {
   color: #94a3b8;
   text-decoration: none;
 }
+
+/* ===================================================
+   ULTRA-LUXURY GLASSMORPHISM & TRANQUIL ONBOARDING
+=================================================== */
+
+/* Ambient Glow Layer */
+.ambient-background-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.28;
+  animation: floatOrb 12s ease-in-out infinite alternate;
+}
+
+.orb-purple {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #9333ea, transparent 70%);
+  top: -60px;
+  left: -60px;
+}
+
+.orb-pink {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #db2777, transparent 70%);
+  top: 40%;
+  right: -80px;
+  animation-duration: 15s;
+}
+
+.orb-blue {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #3b82f6, transparent 70%);
+  bottom: 50px;
+  left: 20%;
+  animation-duration: 18s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(40px) scale(1.15); }
+}
+
+/* Glass Surface Upgrades */
+.dossier-card,
+.vault-feature-card,
+.chat-thread-card,
+.profile-identity-card,
+.happy-hour-card {
+  background: rgba(14, 16, 32, 0.65) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15), 0 16px 40px -10px rgba(0, 0, 0, 0.65) !important;
+  position: relative;
+  z-index: 1;
+}
+
+.mobile-header {
+  background: rgba(8, 10, 20, 0.75) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.bottom-nav-glass {
+  background: rgba(12, 14, 28, 0.8) !important;
+  backdrop-filter: blur(32px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 20px 50px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ===================================================
+   TRANQUIL PROGRESSIVE ONBOARDING STYLES
+=================================================== */
+
+.onboard-glass-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(4, 5, 12, 0.88);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.onboard-glass-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(16, 18, 36, 0.82);
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), 0 24px 60px rgba(0, 0, 0, 0.8);
+  border-radius: 28px;
+  padding: 24px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Step Progress Indicator */
+.step-pill-indicator {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.step-pill {
+  flex: 1;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.step-pill.active {
+  background: #c084fc;
+  box-shadow: 0 0 10px #c084fc;
+}
+
+.step-pill.completed {
+  background: #a855f7;
+}
+
+.tranquil-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.animate-fade-in {
+  animation: tranquilFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes tranquilFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Step 1: Welcome */
+.welcome-glow-orb {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.3), rgba(168, 85, 247, 0.05));
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px auto 10px;
+}
+
+.welcome-moon-icon {
+  width: 28px;
+  height: 28px;
+  color: #fde047;
+}
+
+.welcome-text-block {
+  text-align: center;
+}
+
+.welcome-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #c084fc;
+  text-transform: uppercase;
+}
+
+.welcome-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+.welcome-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 6px;
+  line-height: 1.55;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.trust-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+
+.trust-feature-pill {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+/* Micro Headers */
+.step-micro-header {
+  text-align: left;
+}
+
+.step-count-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #c084fc;
+}
+
+.bonus-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(253, 224, 71, 0.12);
+  border: 1px solid rgba(253, 224, 71, 0.3);
+  color: #fde047;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+.step-headline {
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.step-subheadline {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+  line-height: 1.45;
+}
+
+/* Form Units */
+.form-field-unit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-caption {
+  font-size: 11px;
+  font-weight: 800;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.caption-split-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link-reroll-btn {
+  background: none;
+  border: none;
+  color: #c084fc;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+/* Frosted Gender Chips */
+.gender-glass-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.gender-chip {
+  padding: 10px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.gender-chip.active {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(217, 70, 239, 0.3));
+  border-color: #c084fc;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+}
+
+/* Frosted Moniker Box */
+.frosted-alias-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 14px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.alias-title {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #ffffff, #fde047);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dice-icon-btn {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dice-icon-btn:active {
+  transform: rotate(45deg);
+}
+
+/* Date of Birth Picker */
+.dob-glass-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 8px;
+}
+
+.glass-dropdown {
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(10, 12, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  outline: none;
+}
+
+.privacy-reassurance-box {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #a7f3d0;
+  line-height: 1.4;
+}
+
+/* Desires Grid */
+.desires-frosted-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.desire-glass-pill {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.desire-glass-pill.selected {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #c084fc;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
+}
+
+/* Action Buttons & Navigation */
+.glass-primary-action-btn {
+  background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.45);
+  transition: all 0.2s ease;
+}
+
+.glass-primary-action-btn:active {
+  transform: scale(0.98);
+}
+
+.glass-back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.onboard-nav-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.step-error-banner {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

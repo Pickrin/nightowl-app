@@ -232,6 +232,13 @@ export default function App() {
 
   return (
     <div className="app-viewport">
+      {/* Ambient Nocturnal Glow Layer for Glassmorphism Refraction */}
+      <div className="ambient-background-layer">
+        <div className="ambient-orb orb-purple" />
+        <div className="ambient-orb orb-pink" />
+        <div className="ambient-orb orb-blue" />
+      </div>
+
       {/* Panic Screen Override */}
       {isPanicActive ? (
         <PanicScreen onExit={() => setIsPanicActive(false)} />
